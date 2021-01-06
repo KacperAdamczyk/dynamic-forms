@@ -9,12 +9,11 @@ function generateFieldValidationSchema(
   controlType: FormSchema['controlType'],
   constraints: FormSchema['constraints'] = {},
 ) {
-  const base = string();
+  let base = string();
 
   const { required } = constraints;
-
   if (required) {
-    base.required();
+    base = base.required();
   }
 
   switch (controlType) {
@@ -22,11 +21,11 @@ function generateFieldValidationSchema(
       Object.entries(constraints as InputConstraint).forEach(
         ([name, value]) => {
           if (name === 'min') {
-            base.min(value);
+            base = base.min(value);
           }
 
           if (name === 'max') {
-            base.max(value);
+            base = base.max(value);
           }
         },
       );
@@ -76,6 +75,7 @@ export const Form: FC<Props> = ({ schema }) => {
 
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}

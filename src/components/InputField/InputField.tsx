@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useField, ErrorMessage } from 'formik';
+import { useField } from 'formik';
 import { TextInput } from 'carbon-components-react';
 
 interface Props {
@@ -8,12 +8,15 @@ interface Props {
 }
 
 export const InputField: FC<Props> = ({ name, label }) => {
-  const [field, meta] = useField<string>(name);
-  console.log('meta', meta);
+  const [field, { error }] = useField<string>(name);
+
   return (
-    <>
-      <TextInput id={name} labelText={label} {...field} />
-      <ErrorMessage name={name} />
-    </>
+    <TextInput
+      id={name}
+      labelText={label}
+      invalid={!!error}
+      invalidText={error}
+      {...field}
+    />
   );
 };

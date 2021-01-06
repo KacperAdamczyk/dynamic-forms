@@ -12,10 +12,16 @@ interface Props {
 }
 
 export const SelectField: FC<Props> = ({ name, label, data }) => {
-  const [field, meta] = useField<string>(name);
+  const [field, { error }] = useField<string>(name);
 
   return (
-    <Select id={name} labelText={label} {...field}>
+    <Select
+      id={name}
+      labelText={label}
+      invalid={!!error}
+      invalidText={error}
+      {...field}
+    >
       {data.map(({ label, value }) => (
         <SelectItem key={value} value={value} text={label} />
       ))}
